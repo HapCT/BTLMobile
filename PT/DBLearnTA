@@ -1,0 +1,159 @@
+PRAGMA foreign_keys = ON; 
+PRAGMA journal_mode = WAL;
+
+CREATE TABLE VaiTro(
+    VaiTro_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenVaiTro TEXT NOT NULL UNIQUE,
+    MoTa TEXT
+);
+INSERT INTO VaiTro(TenVaiTro, MoTa) VALUES 
+('Admin', 'Quản trị hệ thống'),
+('Học sinh','Người học')
+
+
+CREATE TABLE TaiKhoan (
+    TaiKhoan_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    VaiTro_id INTEGER NOT NULL,
+    TenDangNhap TEXT NOT NULL UNIQUE,
+    MatKhau TEXT NOT NULL,
+    Email TEXT UNIQUE,
+    TrangThai TEXT,
+    FOREIGN KEY (VaiTro_id) REFERENCES VaiTro(VaiTro_id)
+)
+
+CREATE TABLE NguoiDung (
+    NguoiDung_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    TaiKhoan_id INTEGER NOT NULL, 
+    HoTen TEXT,
+    NgaySinh DATE,
+    GioiTinh INTEGER,
+    FOREIGN KEY (TaiKhoan_id) REFERENCES TaiKhoan(TaiKhoan_id)
+)
+
+CREATE TABLE ChuDeTuVung(
+    ChuDeTuVung_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenChuDe TEXT NOT NULL,
+    MoTa TEXT
+)
+
+CREATE TABLE TuVung(
+    TuVung_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ChuDeTuVung_id INTEGER NOT NULL,
+    TuVung TEXT NOT NULL,
+    NghiaTiengViet TEXT NOT NULL,
+    PhienAm TEXT NOT NULL,
+    HinhAnh TEXT,
+    Audio TEXT,
+    FOREIGN KEY(ChuDeTuVung_id) REFERENCES ChuDeTuVung(ChuDeTuVung_id)
+)
+
+CREATE TABLE TuVungDaLuu(
+    NguoiDung_id INTEGER,
+    TuVung_id INTEGER,
+    NgayLuu DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(NguoiDung_id, TuVung_id),
+    FOREIGN KEY(NguoiDung_id) REFERENCES NguoiDung(NguoiDung_id),
+    FOREIGN KEY(TuVung_id) REFERENCES TuVung(TuVung_id)
+);
+
+CREATE TABLE BaiHocNguPhap(
+    BaiHocNP_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    TieuDe TEXT NOT NULL UNIQUE,
+    NoiDungBai TEXT NOT NULL, 
+    CapDo INTEGER
+)
+
+CREATE TABLE LichSuHocNguPhap(
+    NguoiDung_id INTEGER,
+    BaiHocNP_id INTEGER,
+    NgayHoc DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(NguoiDung_id, BaiHocNP_id),
+    FOREIGN KEY(NguoiDung_id) REFERENCES NguoiDung(NguoiDung_id),
+    FOREIGN KEY(BaiHocNP_id) REFERENCES BaiHocNguPhap(BaiHocNP_id)
+);
+
+CREATE TABLE BaiLuyenNghe(
+    BaiLuyenNghe_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    TieuDe TEXT,
+    Audio TEXT,
+    Transcript TEXT,
+    CapDo INTEGER
+);
+
+CREATE TABLE LichSuLuyenNghe(
+    NguoiDung_id INTEGER,
+    BaiLuyenNghe_id INTEGER,
+    NgayHoc DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(NguoiDung_id, BaiLuyenNghe_id),
+    FOREIGN KEY(NguoiDung_id) REFERENCES NguoiDung(NguoiDung_id),
+    FOREIGN KEY(BaiLuyenNghe_id) REFERENCES BaiLuyenNghe(BaiLuyenNghe_id)
+);
+
+CREATE TABLE LoaiQuiz(
+    LoaiQuiz_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenLoai TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE Quiz(
+    Quiz_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    LoaiQuiz_id INTEGER NOT NULL,
+    TenQuiz TEXT NOT NULL,
+    MoTa TEXT,
+    FOREIGN KEY(LoaiQuiz_id)
+    REFERENCES LoaiQuiz(LoaiQuiz_id)
+);
+
+CREATE TABLE CauHoiQuiz(
+    CauHoi_id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    NoiDung TEXT NOT NULL,
+    DapAnA TEXT NOT NULL,
+    DapAnB TEXT NOT NULL,
+    DapAnC TEXT NOT NULL,
+    DapAnD TEXT NOT NULL,
+    DapAnDung TEXT NOT NULL
+);
+CREATE TABLE ChiTietQuiz(
+    Quiz_id INTEGER,
+    CauHoi_id INTEGER,
+    PRIMARY KEY(Quiz_id, CauHoi_id),
+    FOREIGN KEY(Quiz_id)REFERENCES Quiz(Quiz_id),
+    FOREIGN KEY(CauHoi_id)REFERENCES CauHoiQuiz(CauHoi_id)
+);
+CREATE TABLE KetQuaQuiz(
+    KetQuaQuiz_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    NguoiDung_id INTEGER NOT NULL,
+    Quiz_id INTEGER NOT NULL,
+    Diem REAL,
+    SoCauDung INTEGER,
+    NgayLam DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(NguoiDung_id) REFERENCES NguoiDung(NguoiDung_id),
+    FOREIGN KEY(Quiz_id) REFERENCES Quiz(Quiz_id)
+);
+CREATE TABLE TienDoHocTap(
+    NguoiDung_id INTEGER PRIMARY KEY,
+    TongXP INTEGER DEFAULT 0,
+    TongTuVungDaHoc INTEGER DEFAULT 0,
+    TongNguPhapDaHoc INTEGER DEFAULT 0,
+    TongBaiNgheDaHoc INTEGER DEFAULT 0,
+    TongQuizDaLam INTEGER DEFAULT 0,
+    ChuoiHocTap INTEGER DEFAULT 0,
+    NgayHocGanNhat DATETIME,
+    FOREIGN KEY(NguoiDung_id) REFERENCES NguoiDung(NguoiDung_id)
+);
+
+CREATE TABLE ThongBao(
+    ThongBao_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    TieuDe TEXT NOT NULL,
+    NoiDung TEXT NOT NULL,
+    NgayTao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE ChiTietThongBao(
+    ThongBao_id INTEGER,
+    NguoiDung_id INTEGER,
+    DaDoc INTEGER DEFAULT 0,
+    NgayDoc DATETIME,
+    PRIMARY KEY(ThongBao_id, NguoiDung_id),
+    FOREIGN KEY(ThongBao_id)REFERENCES ThongBao(ThongBao_id),
+    FOREIGN KEY(NguoiDung_id) REFERENCES NguoiDung(NguoiDung_id)
+);
