@@ -62,7 +62,6 @@
         android:textSize="20sp"
         android:text="ĐĂNG NHẬP"
         android:backgroundTint="@null"
-        android:background="@drawable/button_login"
         app:layout_constraintTop_toBottomOf="@id/edtPass"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +87,9 @@
             android:layout_height="wrap_content"
             android:text="Đăng ký"
             android:textColor="#2196F3"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

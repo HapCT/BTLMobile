@@ -1,20 +1,24 @@
 package com.example.btlmobile.models;
 
+import android.widget.TableRow;
+
 public class TaiKhoan {
     private int TaiKhoan_id;
     private String TenDN;
     private String MatKhau;
     private String email;
     private int VaiTro_id;
+    private String TrangThai;
     public TaiKhoan(){
 
     }
-    public TaiKhoan(int TaiKhoan_id, String TenDN, String MatKhau, String email, int VaiTro_id){
+    public TaiKhoan(int TaiKhoan_id, String TenDN, String MatKhau, String email, int VaiTro_id, String TrangThai){
         this.TaiKhoan_id = TaiKhoan_id;
         this.TenDN = TenDN;
         this.MatKhau = MatKhau;
         this.email = email;
         this.VaiTro_id = VaiTro_id;
+        this.TrangThai = TrangThai;
     }
     public int getTaiKhoan_id(){
         return TaiKhoan_id;
@@ -45,5 +49,11 @@ public class TaiKhoan {
     }
     public void setVaiTro_id(int VaiTro_id){
         this.VaiTro_id = VaiTro_id;
+    }
+    public String getTrangThai(){
+        return TrangThai;
+    }
+    public void setTrangThai(String TrangThai){
+        this.TrangThai = TrangThai;
     }
 }
