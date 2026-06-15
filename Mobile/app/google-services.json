@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "130120598663",
+    "firebase_url": "https://btltienganh-default-rtdb.firebaseio.com",
+    "project_id": "btltienganh",
+    "storage_bucket": "btltienganh.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130120598663:android:f3ac05a4c1034efa3e2422",
+        "android_client_info": {
+          "package_name": "com.example.btlmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkiy12USKY1ASAUjbkLRvHAZl--n0TgDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

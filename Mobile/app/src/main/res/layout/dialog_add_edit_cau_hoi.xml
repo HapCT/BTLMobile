@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/etNoiDungCauHoi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nội dung câu hỏi"
+            android:minLines="2" />
+
+        <EditText
+            android:id="@+id/etDapAnA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Đáp án A"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/etDapAnB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Đáp án B"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/etDapAnC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Đáp án C"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/etDapAnD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Đáp án D"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn đáp án đúng (A/B/C/D):"
+            android:layout_marginTop="12dp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spDapAnDung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/dap_an_array"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
+</ScrollView>

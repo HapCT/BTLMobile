@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BTLMobile</string>
+    <string-array name="dap_an_array">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+    </string-array>
 </resources>

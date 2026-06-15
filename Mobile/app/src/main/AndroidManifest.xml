@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,6 +26,24 @@
         <activity android:name=".activities.DangKy"/>
         <activity android:name=".activities.AdminActivities"/>
         <activity android:name=".activities.UserActivities"/>
+        <activity android:name=".activities.QLTaiKhoanActivity"/>
+        <activity android:name=".activities.QLTuVungActivity"/>
+        <activity android:name=".activities.QLNguPhapActivity"/>
+        <activity android:name=".activities.QLChiTietTuVungActivity"/>
+        <activity android:name=".activities.QLQuizActivity"/>
+        <activity android:name=".activities.UserProfileActivity"/>
+        <activity android:name=".activities.QLLuyenNgheActivity"/>
+        <activity android:name=".activities.ThongKeActivity"/>
+        <activity android:name=".activities.NguPhapDetailActivity"/>
+        <activity android:name=".activities.HocNguPhapActivity"/>
+        <activity android:name=".activities.LamQuizActivity"/>
+        <activity android:name=".activities.QLCauHoiQuizActivity"/>
+        <activity android:name=".activities.HocTuVungActivity"
+            android:label="Học từ vựng"/>
+        <activity android:name=".activities.HocChiTietTuVungActivity"
+            android:label="Chi tiết từ vựng"/>
+        <activity android:name=".activities.TuVungYeuThichActivity"
+            android:label="Từ vựng đã lưu"/>
 
     </application>
 

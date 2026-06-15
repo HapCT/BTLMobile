@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvDetailTieuDe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiêu đề bài học"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailCapDo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cấp độ"
+            android:textSize="16sp"
+            android:textColor="#FF5722"
+            android:textStyle="italic"
+            android:layout_marginBottom="12dp"/>
+
+        <View
+            android:layout_width="60dp"
+            android:layout_height="4dp"
+            android:background="#3F51B5"
+            android:layout_marginBottom="20dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:id="@+id/tvDetailNoiDung"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Nội dung chi tiết..."
+                android:textSize="16sp"
+                android:lineSpacingExtra="6dp"
+                android:textColor="#333333"/>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnLuyenTap"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="LUYỆN TẬP NGAY"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#4CAF50"
+            android:textColor="@color/white"
+            app:cornerRadius="30dp"
+            android:layout_marginBottom="32dp"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
