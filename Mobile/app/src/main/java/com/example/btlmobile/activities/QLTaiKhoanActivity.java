@@ -32,7 +32,7 @@ public class QLTaiKhoanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ql_tai_khoan);
+        setContentView(R.layout.qltaikhoan);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,11 +67,10 @@ public class QLTaiKhoanActivity extends AppCompatActivity {
     }
 
     private void performLogout() {
-        // Xóa phiên đăng nhập
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, DangNhapActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
@@ -88,19 +87,17 @@ public class QLTaiKhoanActivity extends AppCompatActivity {
         listTaiKhoan = taiKhoanDAO.getAllTaiKhoan();
         adapter = new TaiKhoanAdapter(this, listTaiKhoan, new TaiKhoanAdapter.OnItemClickListener() {
             @Override
-            public void onLockUnlockClick(TaiKhoan tk) {
-                String newStatus = "Hoạt động".equals(tk.getTrangThai()) ? "Bị khóa" : "Hoạt động";
-                taiKhoanDAO.updateTrangThai(tk.getTaiKhoan_id(), newStatus);
-                Toast.makeText(QLTaiKhoanActivity.this, "Đã cập nhật trạng thái!", Toast.LENGTH_SHORT).show();
-                refreshData();
-            }
-
-            @Override
             public void onDeleteClick(TaiKhoan tk) {
-                // Có thể thêm Dialog xác nhận ở đây
-                taiKhoanDAO.deleteTaiKhoan(tk.getTaiKhoan_id());
-                Toast.makeText(QLTaiKhoanActivity.this, "Đã xóa tài khoản!", Toast.LENGTH_SHORT).show();
-                refreshData();
+                new android.app.AlertDialog.Builder(QLTaiKhoanActivity.this)
+                        .setTitle("Xác nhận xóa")
+                        .setMessage("Bạn có chắc chắn muốn xóa tài khoản này?")
+                        .setPositiveButton("Xóa", (dialog, which) -> {
+                            taiKhoanDAO.deleteTaiKhoan(tk.getTaiKhoan_id());
+                            Toast.makeText(QLTaiKhoanActivity.this, "Đã xóa tài khoản!", Toast.LENGTH_SHORT).show();
+                            refreshData();
+                        })
+                        .setNegativeButton("Hủy", null)
+                        .show();
             }
         });
         rvTaiKhoan.setAdapter(adapter);

@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-public class DangKy extends AppCompatActivity {
+public class DangKyActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     
@@ -96,21 +96,15 @@ public class DangKy extends AppCompatActivity {
             Toast.makeText(this, "Tên đăng nhập đã tồn tại", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // BƯỚC 1: Đăng ký trên Firebase Authentication
         mAuth.createUserWithEmailAndPassword(email, matKhau)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Lấy UID duy nhất từ Firebase
                         String userId = mAuth.getCurrentUser().getUid();
-
-                        // BƯỚC 2: Đẩy thông tin tài khoản lên Realtime Database (Để đồng bộ giữa các máy)
                         HashMap<String, Object> tkMap = new HashMap<>();
                         tkMap.put("TenDangNhap", tenDN);
                         tkMap.put("Email", email);
                         tkMap.put("VaiTro_id", 2);
                         tkMap.put("TrangThai", "Hoạt động");
-                        
                         mDatabase.child("TaiKhoan").child(userId).setValue(tkMap);
                         String gioiTinh = rbNam.isChecked() ? "Nam" : "Nữ";
                         HashMap<String, Object> userMap = new HashMap<>();
@@ -129,11 +123,11 @@ public class DangKy extends AppCompatActivity {
                         if (taiKhoanId > 0) {
                             taiKhoanDAO.insertNguoiDung((int) taiKhoanId, hoTen, ngaySinh, gioiTinh);
                         }
-                        Toast.makeText(DangKy.this, "Đăng ký thành công và đã đồng bộ Cloud!", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(DangKy.this, MainActivity.class));
+                        Toast.makeText(DangKyActivity.this, "Đăng ký thành công và đã đồng bộ Cloud!", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(DangKyActivity.this, DangNhapActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(DangKy.this, "Lỗi Firebase: " + task.getException().getMessage(),
+                        Toast.makeText(DangKyActivity.this, "Lỗi Firebase: " + task.getException().getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
                 });

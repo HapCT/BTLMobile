@@ -15,7 +15,7 @@ import com.example.btlmobile.dao.ThongKeDAO;
 
 public class ThongKeActivity extends AppCompatActivity {
 
-    private TextView tvCountUser, tvCountTuVung, tvCountNguPhap, tvCountQuiz;
+    private TextView tvCountUser, tvCountTuVung, tvCountNguPhap, tvCountQuiz, tvCountDeleted;
     private ThongKeDAO thongKeDAO;
 
     @Override
@@ -48,7 +48,7 @@ public class ThongKeActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, DangNhapActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
@@ -60,6 +60,7 @@ public class ThongKeActivity extends AppCompatActivity {
         tvCountTuVung = findViewById(R.id.tvCountTuVung);
         tvCountNguPhap = findViewById(R.id.tvCountNguPhap);
         tvCountQuiz = findViewById(R.id.tvCountQuiz);
+        tvCountDeleted = findViewById(R.id.tvCountDeleted);
     }
 
     private void displayStats() {
@@ -67,5 +68,6 @@ public class ThongKeActivity extends AppCompatActivity {
         tvCountTuVung.setText(String.valueOf(thongKeDAO.getCountTuVung()));
         tvCountNguPhap.setText(String.valueOf(thongKeDAO.getCountBaiHoc()));
         tvCountQuiz.setText(String.valueOf(thongKeDAO.getCountQuiz()));
+        tvCountDeleted.setText(String.valueOf(thongKeDAO.getCountTaiKhoanDaXoa()));
     }
 }

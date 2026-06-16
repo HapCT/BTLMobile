@@ -26,7 +26,25 @@ public class ThongKeDAO {
     }
 
     public int getCountNguoiDung() {
-        return getCount("NguoiDung");
+        String sql = "SELECT COUNT(*) FROM TaiKhoan WHERE VaiTro_id = 2 AND TrangThai != 'Đã xóa'";
+        Cursor cr = db.getCursor(sql, null);
+        int count = 0;
+        if (cr != null && cr.moveToFirst()) {
+            count = cr.getInt(0);
+            cr.close();
+        }
+        return count;
+    }
+
+    public int getCountTaiKhoanDaXoa() {
+        String sql = "SELECT COUNT(*) FROM TaiKhoan WHERE TrangThai = 'Đã xóa'";
+        Cursor cr = db.getCursor(sql, null);
+        int count = 0;
+        if (cr != null && cr.moveToFirst()) {
+            count = cr.getInt(0);
+            cr.close();
+        }
+        return count;
     }
 
     public int getCountBaiHoc() {

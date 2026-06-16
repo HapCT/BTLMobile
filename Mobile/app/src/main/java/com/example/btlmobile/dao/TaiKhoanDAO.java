@@ -15,9 +15,9 @@ public class TaiKhoanDAO {
         db = new DatabaseHandler(context);
     }
 
-    public TaiKhoan dangNhap(String TenDN, String MatKhau) {
-        String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap = ? AND MatKhau = ?";
-        Cursor cr = db.getCursor(sql, new String[]{TenDN, MatKhau});
+    public TaiKhoan dangNhap(String identifier, String MatKhau) {
+        String sql = "SELECT * FROM TaiKhoan WHERE (TenDangNhap = ? OR Email = ?) AND MatKhau = ? AND TrangThai != 'Đã xóa'";
+        Cursor cr = db.getCursor(sql, new String[]{identifier, identifier, MatKhau});
         TaiKhoan tk = null;
         if (cr != null && cr.moveToFirst()) {
             tk = new TaiKhoan();
@@ -138,13 +138,12 @@ public class TaiKhoanDAO {
     }
 
     public void deleteTaiKhoan(int taiKhoanId) {
-        db.execsql("DELETE FROM NguoiDung WHERE TaiKhoan_id = " + taiKhoanId);
-        db.execsql("DELETE FROM TaiKhoan WHERE TaiKhoan_id = " + taiKhoanId);
+        updateTrangThai(taiKhoanId, "Đã xóa");
     }
 
     public ArrayList<TaiKhoan> getAllTaiKhoan() {
         ArrayList<TaiKhoan> list = new ArrayList<>();
-        String sql = "SELECT * FROM TaiKhoan WHERE VaiTro_id = 2 ";
+        String sql = "SELECT * FROM TaiKhoan WHERE VaiTro_id = 2 AND TrangThai != 'Đã xóa'";
         Cursor cr = db.getCursor(sql, null);
         if (cr != null && cr.moveToFirst()) {
             do {
@@ -164,7 +163,8 @@ public class TaiKhoanDAO {
 
     public ArrayList<TaiKhoan> searchTaiKhoan(String query) {
         ArrayList<TaiKhoan> list = new ArrayList<>();
-        String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap LIKE ? AND VaiTro_id = 2";
+        // Chỉ tìm kiếm trong những tài khoản chưa bị xóa
+        String sql = "SELECT * FROM TaiKhoan WHERE TenDangNhap LIKE ? AND VaiTro_id = 2 AND TrangThai != 'Đã xóa'";
         Cursor cr = db.getCursor(sql, new String[]{"%" + query + "%"});
         if (cr != null && cr.moveToFirst()) {
             do {

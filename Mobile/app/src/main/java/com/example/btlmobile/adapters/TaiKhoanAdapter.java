@@ -23,7 +23,6 @@ public class TaiKhoanAdapter extends RecyclerView.Adapter<TaiKhoanAdapter.ViewHo
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onLockUnlockClick(TaiKhoan tk);
         void onDeleteClick(TaiKhoan tk);
     }
 
@@ -46,18 +45,12 @@ public class TaiKhoanAdapter extends RecyclerView.Adapter<TaiKhoanAdapter.ViewHo
         holder.txtTenDN.setText(tk.getTenDN());
         holder.txtEmail.setText(tk.getEmail());
         holder.txtTrangThai.setText(tk.getTrangThai());
-
-        if ("Bị khóa".equals(tk.getTrangThai())) {
-            holder.txtTrangThai.setTextColor(Color.RED);
-            holder.btnLockUnlock.setText("Mở khóa");
-            holder.btnDelete.setVisibility(View.VISIBLE);
-        } else {
+        if ("Hoạt động".equals(tk.getTrangThai())) {
             holder.txtTrangThai.setTextColor(Color.GREEN);
-            holder.btnLockUnlock.setText("Khóa");
-            holder.btnDelete.setVisibility(View.GONE);
+        } else {
+            holder.txtTrangThai.setTextColor(Color.RED);
         }
 
-        holder.btnLockUnlock.setOnClickListener(v -> listener.onLockUnlockClick(tk));
         holder.btnDelete.setOnClickListener(v -> listener.onDeleteClick(tk));
     }
 
@@ -73,14 +66,13 @@ public class TaiKhoanAdapter extends RecyclerView.Adapter<TaiKhoanAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtTenDN, txtEmail, txtTrangThai;
-        Button btnLockUnlock, btnDelete;
+        Button btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTenDN = itemView.findViewById(R.id.txtTenDN);
             txtEmail = itemView.findViewById(R.id.txtEmail);
             txtTrangThai = itemView.findViewById(R.id.txtTrangThai);
-            btnLockUnlock = itemView.findViewById(R.id.btnLockUnlock);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
     }
