@@ -36,8 +36,21 @@ public class DangNhapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // 0. Bật Persistence để hỗ trợ Offline hoàn toàn
+        try {
+            if (com.google.firebase.database.FirebaseDatabase.getInstance() != null) {
+                com.google.firebase.database.FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            }
+        } catch (Exception ignored) {}
+
+        // 1. Luôn chuẩn bị Database đầu tiên, kể cả khi có session hay không
+        com.example.btlmobile.database.DatabaseHandler dbHandler = new com.example.btlmobile.database.DatabaseHandler(this);
+        dbHandler.DB2SDCard();
+
         mAuth = FirebaseAuth.getInstance();
         sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        
+        // 2. Sau khi đã có DB, mới kiểm tra session để chuyển màn hình
         checkExistingSession();
 
         EdgeToEdge.enable(this);
@@ -52,6 +65,7 @@ public class DangNhapActivity extends AppCompatActivity {
         }
 
         taiKhoanDAO = new TaiKhoanDAO(this);
+        // 3. Bắt đầu đồng bộ dữ liệu từ Cloud
         new FirebaseSyncHelper(this).startSync();
 
         Inputs();
@@ -116,23 +130,51 @@ public class DangNhapActivity extends AppCompatActivity {
                     Toast.makeText(DangNhapActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 TaiKhoan tk = taiKhoanDAO.dangNhap(inputTenDN, inputMatKhau);
+
                 if (tk != null) {
+                    // Trường hợp 1: Tài khoản đã có ở máy cục bộ
                     if (isNetworkAvailable()) {
                         mAuth.signInWithEmailAndPassword(tk.getEmail(), inputMatKhau)
                                 .addOnCompleteListener(DangNhapActivity.this, task -> {
                                     if (task.isSuccessful()) {
                                         startSession(tk);
                                     } else {
-                                        Log.e("LOGIN", "Firebase Sync Failed: " + task.getException().getMessage());
+                                        Log.e("LOGIN", "Firebase Auth Failed: " + task.getException().getMessage());
+                                        // Vẫn cho vào nếu local pass nhưng Firebase lỗi (chế độ offline)
                                         startSession(tk);
                                     }
                                 });
                     } else {
                         startSession(tk);
                     }
+                } else if (inputTenDN.contains("@")) {
+                    // Trường hợp 2: Máy mới chưa có data cục bộ, thử đăng nhập Firebase trực tiếp bằng Email
+                    if (isNetworkAvailable()) {
+                        mAuth.signInWithEmailAndPassword(inputTenDN, inputMatKhau)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(DangNhapActivity.this, "Đang đồng bộ dữ liệu...", Toast.LENGTH_SHORT).show();
+                                        // Sau khi Firebase Auth OK, ta thử lấy lại từ Local vì SyncHelper có thể đã tải về
+                                        TaiKhoan cloudTk = taiKhoanDAO.getTaiKhoanByEmail(inputTenDN);
+                                        if (cloudTk != null) {
+                                            // CẬP NHẬT: Lưu mật khẩu thật vào máy mới để lần sau dùng offline được
+                                            taiKhoanDAO.updateMatKhau(inputTenDN, inputMatKhau);
+                                            startSession(cloudTk);
+                                        } else {
+                                            // Nếu vẫn chưa có local, yêu cầu thử lại sau 1-2 giây
+                                            Toast.makeText(DangNhapActivity.this, "Dữ liệu đang được tải về, vui lòng thử lại sau 2 giây", Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(DangNhapActivity.this, "Không có kết nối mạng để kiểm tra tài khoản mới", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DangNhapActivity.this, "Tài khoản không tồn tại trên máy này. Thử đăng nhập bằng Email để đồng bộ.", Toast.LENGTH_LONG).show();
                 }
             }
         });

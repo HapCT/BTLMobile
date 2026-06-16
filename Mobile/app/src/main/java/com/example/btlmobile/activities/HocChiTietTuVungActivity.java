@@ -30,7 +30,7 @@ public class HocChiTietTuVungActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hoc_chi_tiet_tu_vung);
+        setContentView(R.layout.hocchitiettuvungui);
 
         chuDeId = getIntent().getIntExtra("chuDeId", -1);
         tenChuDe = getIntent().getStringExtra("tenChuDe");
@@ -54,7 +54,6 @@ public class HocChiTietTuVungActivity extends AppCompatActivity {
 
     private void setupEvents() {
         btnLuyenTapTuVung.setOnClickListener(v -> {
-            // Tìm Quiz có tên chứa tên chủ đề
             ArrayList<Quiz> allQuizzes = quizDAO.getAllQuiz();
             int quizId = -1;
             for (Quiz q : allQuizzes) {

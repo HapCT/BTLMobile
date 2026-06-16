@@ -37,7 +37,7 @@ public class QLChiTietTuVungActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ql_chi_tiet_tu_vung);
+        setContentView(R.layout.qlchitiettuvungui);
 
         chuDeId = getIntent().getIntExtra("chuDeId", -1);
         tenChuDe = getIntent().getStringExtra("tenChuDe");

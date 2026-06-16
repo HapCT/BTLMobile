@@ -33,7 +33,7 @@ public class QLNguPhapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ql_ngu_phap);
+        setContentView(R.layout.qlnguphapui);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Quản lý Ngữ pháp");

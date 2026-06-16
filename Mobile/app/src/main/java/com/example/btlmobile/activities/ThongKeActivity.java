@@ -21,7 +21,7 @@ public class ThongKeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thong_ke);
+        setContentView(R.layout.thongkeui);
 
         thongKeDAO = new ThongKeDAO(this);
         initViews();

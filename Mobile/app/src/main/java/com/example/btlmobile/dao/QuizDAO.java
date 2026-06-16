@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import com.example.btlmobile.database.DatabaseHandler;
+import com.example.btlmobile.models.LichSuQuiz;
 import com.example.btlmobile.models.Quiz;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -68,5 +69,18 @@ public class QuizDAO {
         boolean exists = (cursor != null && cursor.getCount() > 0);
         if (cursor != null) cursor.close();
         return exists;
+    }
+
+    public void saveLichSu(LichSuQuiz ls) {
+        ContentValues values = new ContentValues();
+        values.put("TaiKhoan_id", ls.getTaiKhoan_id());
+        values.put("Quiz_id", ls.getQuiz_id());
+        values.put("Diem", ls.getDiem());
+        values.put("NgayLam", ls.getNgayLam());
+        long id = dbHandler.insert("LichSuQuiz", values);
+        if (id > 0) {
+            ls.setLichSu_id((int) id);
+            mDatabase.child("LichSuQuiz").child(String.valueOf(id)).setValue(ls);
+        }
     }
 }

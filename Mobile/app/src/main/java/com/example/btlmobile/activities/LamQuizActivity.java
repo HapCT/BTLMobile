@@ -110,6 +110,15 @@ public class LamQuizActivity extends AppCompatActivity {
     }
 
     private void showResultDialog() {
+        // Lưu lịch sử làm bài
+        int taiKhoanId = getSharedPreferences("UserSession", MODE_PRIVATE).getInt("taiKhoanId", -1);
+        if (taiKhoanId != -1) {
+            int quizId = getIntent().getIntExtra("quiz_id", 1);
+            String ngayLam = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+            com.example.btlmobile.models.LichSuQuiz ls = new com.example.btlmobile.models.LichSuQuiz(taiKhoanId, quizId, score, ngayLam);
+            cauHoiDAO.saveLichSu(ls); // Bạn có thể move hàm này sang QuizDAO, ở đây tôi dùng cauHoiDAO để tiện
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle("Kết quả")
                 .setMessage("Bạn đã hoàn thành bài tập!\nSố câu đúng: " + score + "/" + listCauHoi.size())

@@ -26,10 +26,24 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.userprofileui);
 
-        taiKhoanId = getIntent().getIntExtra("taiKhoanId", -1);
         taiKhoanDAO = new TaiKhoanDAO(this);
+
+        // Đảm bảo lấy được taiKhoanId: Ưu tiên Intent, nếu không có thì lấy từ Session
+        taiKhoanId = getIntent().getIntExtra("taiKhoanId", -1);
+        if (taiKhoanId == -1) {
+            SharedPreferences sp = getSharedPreferences("UserSession", MODE_PRIVATE);
+            taiKhoanId = sp.getInt("taiKhoanId", -1);
+        }
+
+        // Nếu vẫn không có ID thì không thể tiếp tục
+        if (taiKhoanId == -1) {
+            Toast.makeText(this, "Không thể xác định tài khoản!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Hồ sơ cá nhân");
@@ -58,7 +72,6 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void performLogout() {
-        // Xóa phiên đăng nhập
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
 
@@ -87,22 +100,35 @@ public class UserProfileActivity extends AppCompatActivity {
             etNgaySinh.setText(currentUser.getNgaySinh());
             etGioiTinh.setText(currentUser.getGioiTinh());
         }
-        
-        // Nếu muốn hiển thị Email (giả sử có 1 EditText hoặc TextView cho Email)
-        // Trong layout hiện tại chưa có trường Email, bạn có thể bổ sung sau.
         if (tk != null) {
             // etEmail.setText(tk.getEmail());
         }
     }
 
     private void updateProfile() {
-        if (currentUser == null) return;
+        String hoTen = etHoTen.getText().toString().trim();
+        String ngaySinh = etNgaySinh.getText().toString().trim();
+        String gioiTinh = etGioiTinh.getText().toString().trim();
 
-        currentUser.setHoTen(etHoTen.getText().toString().trim());
-        currentUser.setNgaySinh(etNgaySinh.getText().toString().trim());
-        currentUser.setGioiTinh(etGioiTinh.getText().toString().trim());
+        // 1. Validation (Boundary)
+        if (hoTen.isEmpty() || ngaySinh.isEmpty() || gioiTinh.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (currentUser != null) {
+            currentUser.setHoTen(hoTen);
+            currentUser.setNgaySinh(ngaySinh);
+            currentUser.setGioiTinh(gioiTinh);
+            taiKhoanDAO.updateNguoiDung(currentUser);
+        } else {
+            taiKhoanDAO.insertNguoiDung(taiKhoanId, hoTen, ngaySinh, gioiTinh);
+            currentUser = taiKhoanDAO.getNguoiDungByTaiKhoan(taiKhoanId);
+        }
 
-        taiKhoanDAO.updateNguoiDung(currentUser);
-        Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+        // Đồng bộ lên Firebase để các máy khác có thể nhận được dữ liệu mới
+        com.google.firebase.database.DatabaseReference ref = com.google.firebase.database.FirebaseDatabase.getInstance().getReference("NguoiDung");
+        ref.child(String.valueOf(taiKhoanId)).setValue(currentUser);
+
+        Toast.makeText(this, "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -51,6 +51,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Đảm bảo cấu trúc bảng luôn đúng (tránh crash khi schema cũ thiếu cột)
         db.execSQL("CREATE TABLE IF NOT EXISTS Quiz (Quiz_id INTEGER PRIMARY KEY AUTOINCREMENT, TenQuiz TEXT, LoaiQuiz_id INTEGER)");
         db.execSQL("CREATE TABLE IF NOT EXISTS CauHoiQuiz (CauHoi_id INTEGER PRIMARY KEY AUTOINCREMENT, Quiz_id INTEGER, NoiDung TEXT, DapAnA TEXT, DapAnB TEXT, DapAnC TEXT, DapAnD TEXT, DapAnDung TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS LichSuQuiz (LichSu_id INTEGER PRIMARY KEY AUTOINCREMENT, TaiKhoan_id INTEGER, Quiz_id INTEGER, Diem INTEGER, NgayLam TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS LichSuHocNguPhap (LichSuNP_id INTEGER PRIMARY KEY AUTOINCREMENT, TaiKhoan_id INTEGER, BaiHocNP_id INTEGER, NgayHoc TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS LichSuLuyenNghe (LichSuLN_id INTEGER PRIMARY KEY AUTOINCREMENT, TaiKhoan_id INTEGER, BaiNghe_id INTEGER, NgayNghe TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS TuVungYeuThich (ID INTEGER PRIMARY KEY AUTOINCREMENT, TaiKhoan_id INTEGER, TuVung_id INTEGER)");
 
         // Vá lỗi schema cho các bản cài đặt cũ
         try { db.execSQL("ALTER TABLE CauHoiQuiz ADD COLUMN Quiz_id INTEGER"); } catch (Exception ignored) {}

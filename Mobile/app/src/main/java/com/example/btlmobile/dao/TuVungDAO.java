@@ -94,7 +94,6 @@ public class TuVungDAO {
         ContentValues values = new ContentValues();
         values.put("ChuDeTuVung_id", tuVung.getChuDeTuVung_id());
         values.put("TuVung", tuVung.getTuVung());
-        // Use NghiaTiengViet to match schema
         values.put("NghiaTiengViet", tuVung.getNghia());
         values.put("PhienAm", tuVung.getPhienAm());
         values.put("HinhAnh", tuVung.getHinhAnh());
@@ -110,7 +109,6 @@ public class TuVungDAO {
     public int updateTuVung(TuVung tuVung) {
         ContentValues values = new ContentValues();
         values.put("TuVung", tuVung.getTuVung());
-        // Use NghiaTiengViet to match schema
         values.put("NghiaTiengViet", tuVung.getNghia());
         values.put("PhienAm", tuVung.getPhienAm());
         values.put("HinhAnh", tuVung.getHinhAnh());
@@ -143,18 +141,24 @@ public class TuVungDAO {
         if (cursor != null) cursor.close();
         return exists;
     }
-
-    // Các hàm cho Từ vựng yêu thích
     public void addFavorite(int taiKhoanId, int tuVungId) {
         ContentValues values = new ContentValues();
         values.put("TaiKhoan_id", taiKhoanId);
         values.put("TuVung_id", tuVungId);
-        dbHandler.insert("TuVungYeuThich", values);
+        long result = dbHandler.insert("TuVungYeuThich", values);
+        if (result != -1) {
+            // Đẩy lên Firebase: TuVungYeuThich/{taiKhoanId}_{tuVungId}
+            mDatabase.child("TuVungYeuThich").child(taiKhoanId + "_" + tuVungId).setValue(values);
+        }
     }
 
     public void removeFavorite(int taiKhoanId, int tuVungId) {
-        dbHandler.delete("TuVungYeuThich", "TaiKhoan_id = ? AND TuVung_id = ?", 
+        int rows = dbHandler.delete("TuVungYeuThich", "TaiKhoan_id = ? AND TuVung_id = ?", 
             new String[]{String.valueOf(taiKhoanId), String.valueOf(tuVungId)});
+        if (rows > 0) {
+            // Xóa trên Firebase
+            mDatabase.child("TuVungYeuThich").child(taiKhoanId + "_" + tuVungId).removeValue();
+        }
     }
 
     public boolean isFavorite(int taiKhoanId, int tuVungId) {

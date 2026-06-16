@@ -34,7 +34,7 @@ public class QLCauHoiQuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ql_cau_hoi_quiz);
+        setContentView(R.layout.qlcauhoiquizui);
 
         quizId = getIntent().getIntExtra("quiz_id", -1);
         tenQuiz = getIntent().getStringExtra("ten_quiz");
@@ -132,7 +132,6 @@ public class QLCauHoiQuizActivity extends AppCompatActivity {
                 newCH.setDapAnDung(dung);
                 cauHoiDAO.insertCauHoi(newCH);
             } else {
-                // Tương tự cho update nếu cần, ở đây tôi demo insert trước
                 cauHoi.setNoiDung(noiDung);
                 cauHoi.setDapAnA(a);
                 cauHoi.setDapAnB(b);

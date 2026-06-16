@@ -33,7 +33,7 @@ public class QLTuVungActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ql_tu_vung);
+        setContentView(R.layout.qltuvungui);
         if(getSupportActionBar() !=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Quản lý chủ đề từ vựng");
@@ -63,7 +63,6 @@ public class QLTuVungActivity extends AppCompatActivity {
     }
 
     private void performLogout() {
-        // Xóa phiên đăng nhập
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
 

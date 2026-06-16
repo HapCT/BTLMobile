@@ -118,7 +118,11 @@ public class TaiKhoanDAO {
     }
 
     public void updateNguoiDung(NguoiDung user) {
-        db.execsql("UPDATE NguoiDung SET HoTen = '" + user.getHoTen() + "', NgaySinh = '" + user.getNgaySinh() + "', GioiTinh = '" + user.getGioiTinh() + "' WHERE NguoiDung_id = " + user.getNguoiDungId());
+        ContentValues values = new ContentValues();
+        values.put("HoTen", user.getHoTen());
+        values.put("NgaySinh", user.getNgaySinh());
+        values.put("GioiTinh", user.getGioiTinh());
+        db.update("NguoiDung", values, "NguoiDung_id = ?", new String[]{String.valueOf(user.getNguoiDungId())});
     }
 
     public boolean checkTenDN(String TenDN) {
@@ -130,11 +134,22 @@ public class TaiKhoanDAO {
     }
 
     public void updateVaiTroVaEmail(String tenDN, String email, int vaiTroId) {
-        db.execsql("UPDATE TaiKhoan SET Email = '" + email + "', VaiTro_id = " + vaiTroId + " WHERE TenDangNhap = '" + tenDN + "'");
+        ContentValues values = new ContentValues();
+        values.put("Email", email);
+        values.put("VaiTro_id", vaiTroId);
+        db.update("TaiKhoan", values, "TenDangNhap = ?", new String[]{tenDN});
+    }
+
+    public void updateMatKhau(String email, String matKhauMoi) {
+        ContentValues values = new ContentValues();
+        values.put("MatKhau", matKhauMoi);
+        db.update("TaiKhoan", values, "Email = ?", new String[]{email});
     }
 
     public void updateTrangThai(int taiKhoanId, String trangThai) {
-        db.execsql("UPDATE TaiKhoan SET TrangThai = '" + trangThai + "' WHERE TaiKhoan_id = " + taiKhoanId);
+        ContentValues values = new ContentValues();
+        values.put("TrangThai", trangThai);
+        db.update("TaiKhoan", values, "TaiKhoan_id = ?", new String[]{String.valueOf(taiKhoanId)});
     }
 
     public void deleteTaiKhoan(int taiKhoanId) {
