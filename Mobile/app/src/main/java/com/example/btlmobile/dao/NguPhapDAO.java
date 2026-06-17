@@ -68,6 +68,25 @@ public class NguPhapDAO {
         if (cursor != null) cursor.close();
         return exists;
     }
+
+    public ArrayList<BaiHocNguPhap> searchNguPhap(String query) {
+        ArrayList<BaiHocNguPhap> list = new ArrayList<>();
+        String sql = "SELECT * FROM BaiHocNguPhap WHERE TieuDe LIKE ?";
+        Cursor cursor = dbHandler.getCursor(sql, new String[]{"%" + query + "%"});
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                BaiHocNguPhap bh = new BaiHocNguPhap();
+                bh.setBaiHocNP_id(cursor.getInt(cursor.getColumnIndexOrThrow("BaiHocNP_id")));
+                bh.setTieuDe(cursor.getString(cursor.getColumnIndexOrThrow("TieuDe")));
+                bh.setNoiDungBai(cursor.getString(cursor.getColumnIndexOrThrow("NoiDungBai")));
+                bh.setCapDo(cursor.getString(cursor.getColumnIndexOrThrow("CapDo")));
+                list.add(bh);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return list;
+    }
+
     public int deleteBaiHoc(int id) {
         long id1 = dbHandler.delete("BaiHocNguPhap", "BaiHocNP_id = ?", new String[]{String.valueOf(id)});
         if(id1 > 0){

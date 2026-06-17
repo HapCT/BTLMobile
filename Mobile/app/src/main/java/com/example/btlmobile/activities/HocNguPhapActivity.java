@@ -2,6 +2,8 @@ package com.example.btlmobile.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.btlmobile.R;
@@ -51,5 +53,39 @@ public class HocNguPhapActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        if (searchItem != null) {
+            androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+            searchView.setQueryHint("Tìm kiếm ngữ pháp...");
+            searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    performSearch(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    performSearch(newText);
+                    return true;
+                }
+            });
+        }
+        return true;
+    }
+
+    private void performSearch(String query) {
+        if (query.isEmpty()) {
+            loadData();
+        } else {
+            listNguPhap = nguPhapDAO.searchNguPhap(query);
+            adapter = new NguPhapAdapter(this, R.layout.item_ngu_phap, listNguPhap);
+            lvNguPhap.setAdapter(adapter);
+        }
     }
 }

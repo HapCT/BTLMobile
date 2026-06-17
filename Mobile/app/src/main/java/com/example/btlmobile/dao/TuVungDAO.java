@@ -43,6 +43,26 @@ public class TuVungDAO {
         return list;
     }
 
+    public ArrayList<ChuDeTuVung> searchChuDe(String query) {
+        ArrayList<ChuDeTuVung> list = new ArrayList<>();
+        String sql = "SELECT * FROM ChuDeTuVung WHERE TenChuDe LIKE ?";
+        Cursor cursor = dbHandler.getCursor(sql, new String[]{"%" + query + "%"});
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                ChuDeTuVung cd = new ChuDeTuVung();
+                cd.setChuDeTuVung_id(cursor.getInt(cursor.getColumnIndexOrThrow("ChuDeTuVung_id")));
+                cd.setTenChuDe(cursor.getString(cursor.getColumnIndexOrThrow("TenChuDe")));
+                int moTaIndex = cursor.getColumnIndex("MoTa");
+                if (moTaIndex != -1) {
+                    cd.setHinhAnh(cursor.getString(moTaIndex));
+                }
+                list.add(cd);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return list;
+    }
+
     public long insertChuDe(ChuDeTuVung chuDe) {
         ContentValues values = new ContentValues();
         values.put("TenChuDe", chuDe.getTenChuDe());
@@ -141,6 +161,27 @@ public class TuVungDAO {
         if (cursor != null) cursor.close();
         return exists;
     }
+
+    public ArrayList<TuVung> searchTuVung(int chuDeId, String query) {
+        ArrayList<TuVung> list = new ArrayList<>();
+        String sql = "SELECT * FROM TuVung WHERE ChuDeTuVung_id = ? AND TuVung LIKE ?";
+        Cursor cursor = dbHandler.getCursor(sql, new String[]{String.valueOf(chuDeId), "%" + query + "%"});
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                TuVung tv = new TuVung();
+                tv.setTuVung_id(cursor.getInt(cursor.getColumnIndexOrThrow("TuVung_id")));
+                tv.setChuDeTuVung_id(cursor.getInt(cursor.getColumnIndexOrThrow("ChuDeTuVung_id")));
+                tv.setTuVung(cursor.getString(cursor.getColumnIndexOrThrow("TuVung")));
+                tv.setNghia(cursor.getString(cursor.getColumnIndexOrThrow("NghiaTiengViet")));
+                tv.setPhienAm(cursor.getString(cursor.getColumnIndexOrThrow("PhienAm")));
+                tv.setHinhAnh(cursor.getString(cursor.getColumnIndexOrThrow("HinhAnh")));
+                list.add(tv);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return list;
+    }
+
     public void addFavorite(int taiKhoanId, int tuVungId) {
         ContentValues values = new ContentValues();
         values.put("TaiKhoan_id", taiKhoanId);

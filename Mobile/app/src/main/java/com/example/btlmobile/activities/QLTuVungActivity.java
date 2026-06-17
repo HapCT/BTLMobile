@@ -50,7 +50,35 @@ public class QLTuVungActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        if (searchItem != null) {
+            androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+            searchView.setQueryHint("Tìm kiếm chủ đề...");
+            searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    performSearch(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    performSearch(newText);
+                    return true;
+                }
+            });
+        }
         return true;
+    }
+
+    private void performSearch(String query) {
+        if (query.isEmpty()) {
+            loadData();
+        } else {
+            listChuDe = tuVungDAO.searchChuDe(query);
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listChuDe);
+            lvChuDe.setAdapter(adapter);
+        }
     }
 
     @Override

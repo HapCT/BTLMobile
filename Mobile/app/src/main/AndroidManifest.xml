@@ -44,6 +44,8 @@
             android:label="Chi tiết từ vựng"/>
         <activity android:name=".activities.TuVungYeuThichActivity"
             android:label="Từ vựng đã lưu"/>
+        <activity android:name=".activities.HocLuyenNgheActivity"/>
+        <activity android:name=".activities.NgheChiTietActivity"/>
 
     </application>
 

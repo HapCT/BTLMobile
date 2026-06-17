@@ -15,7 +15,7 @@ import com.example.btlmobile.dao.ThongKeDAO;
 
 public class ThongKeActivity extends AppCompatActivity {
 
-    private TextView tvCountUser, tvCountTuVung, tvCountNguPhap, tvCountQuiz, tvCountDeleted;
+    private TextView tvCountUser, tvCountTuVung, tvCountNguPhap, tvCountQuiz, tvCountDeleted, tvCountBaiNghe;
     private ThongKeDAO thongKeDAO;
 
     @Override
@@ -61,6 +61,7 @@ public class ThongKeActivity extends AppCompatActivity {
         tvCountNguPhap = findViewById(R.id.tvCountNguPhap);
         tvCountQuiz = findViewById(R.id.tvCountQuiz);
         tvCountDeleted = findViewById(R.id.tvCountDeleted);
+        tvCountBaiNghe = findViewById(R.id.tvCountBaiNghe);
     }
 
     private void displayStats() {
@@ -69,5 +70,6 @@ public class ThongKeActivity extends AppCompatActivity {
         tvCountNguPhap.setText(String.valueOf(thongKeDAO.getCountBaiHoc()));
         tvCountQuiz.setText(String.valueOf(thongKeDAO.getCountQuiz()));
         tvCountDeleted.setText(String.valueOf(thongKeDAO.getCountTaiKhoanDaXoa()));
+        tvCountBaiNghe.setText(String.valueOf(thongKeDAO.getCountBaiNghe()));
     }
 }

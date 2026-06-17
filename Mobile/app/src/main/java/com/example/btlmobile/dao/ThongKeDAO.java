@@ -54,4 +54,8 @@ public class ThongKeDAO {
     public int getCountQuiz() {
         return getCount("Quiz");
     }
+
+    public int getCountBaiNghe() {
+        return getCount("BaiNghe");
+    }
 }

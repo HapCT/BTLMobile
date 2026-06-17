@@ -77,7 +77,10 @@ public class UserActivities extends AppCompatActivity {
             Intent intent = new Intent(this, HocNguPhapActivity.class);
             startActivity(intent);
         });
-        btnLuyenNghe.setOnClickListener(v -> Toast.makeText(this, "Chức năng Luyện nghe", Toast.LENGTH_SHORT).show());
+        btnLuyenNghe.setOnClickListener(v -> {
+            Intent intent = new Intent(this, HocLuyenNgheActivity.class);
+            startActivity(intent);
+        });
         btnKiemTraQuiz.setOnClickListener(v -> Toast.makeText(this, "Chức năng Kiểm tra Quiz", Toast.LENGTH_SHORT).show());
         btnHoSo.setOnClickListener(v -> {
             Intent intent = new Intent(this, UserProfileActivity.class);

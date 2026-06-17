@@ -1,6 +1,8 @@
 package com.example.btlmobile.models;
 
-public class BaiNghe {
+import java.io.Serializable;
+
+public class BaiNghe implements Serializable {
     private int baiNghe_id;
     private String tieuDe;
     private String moTa;

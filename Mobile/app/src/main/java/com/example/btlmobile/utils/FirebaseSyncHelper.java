@@ -421,8 +421,7 @@ public class FirebaseSyncHelper {
                         try {
                             Integer tkId = data.child("TaiKhoan_id").getValue(Integer.class);
                             Integer tvId = data.child("TuVung_id").getValue(Integer.class);
-                            
-                            // Hỗ trợ cả key lowercase nếu Firebase schema bị lệch
+
                             if (tkId == null) tkId = data.child("taiKhoan_id").getValue(Integer.class);
                             if (tvId == null) tvId = data.child("tuVung_id").getValue(Integer.class);
 

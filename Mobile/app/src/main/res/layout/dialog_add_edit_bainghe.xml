@@ -17,9 +17,25 @@
         android:layout_height="wrap_content"
         android:hint="Mô tả" />
 
-    <EditText
-        android:id="@+id/etAudio"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tên file Audio (ví dụ: lesson1.mp3)" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/etAudio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Tên file hoặc Link URL" />
+
+        <ImageButton
+            android:id="@+id/btnSelectAudio"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_save"
+            android:contentDescription="Chọn audio"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+    </LinearLayout>
 </LinearLayout>
